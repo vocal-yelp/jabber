@@ -1,14 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-import logo from "./logo.svg";
-import "./App.css";
-
-function App() {
-  return (
-    <div className="App">
-      <h1>Adams tag</h1>
-    </div>
-=======
 import "./App.css";
 // import JabberMainPage from './components/JabberMainPage'
 import Routes from "./routes";
@@ -28,7 +18,6 @@ function App() {
         {Routes}
       </div>
     </HashRouter>
->>>>>>> master
   );
 }
 
