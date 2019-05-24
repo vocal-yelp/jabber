@@ -8,7 +8,6 @@ function App() {
   return (
     <HashRouter>
       <div className="App">
-        <h1>Peter's tag</h1>
         <Link to="/">
           <button>Firebase Login Page</button>
         </Link>
