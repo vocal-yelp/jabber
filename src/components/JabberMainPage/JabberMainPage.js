@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import styles from './JabberMainPage.module.scss';
 
 const videoType = 'audio/webm';
 
@@ -7,15 +8,13 @@ export default class JabberMainPage extends Component {
     super(props);
     this.state = {
       recording: false,
-      videos: [],
+      audioURL: ""
     };
   }
 
   async startUpMedia() {
-    const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true}); //turn on device's mic, keep listening until told otherwise.
     // show it to user
-    this.video.srcObject = stream;
-    this.video.play();
     // init recording
     this.mediaRecorder = new MediaRecorder(stream, {
       mimeType: videoType,
@@ -28,16 +27,24 @@ export default class JabberMainPage extends Component {
         this.chunks.push(e.data);
       }
     };
+    this.startRecording();
   }
 
-  startRecording(e) {
-    e.preventDefault();
+  startRecording() {
+    // e.preventDefault();
     // wipe old data chunks
     this.chunks = [];
     // start recorder with 10ms buffer
     this.mediaRecorder.start(10);
     // say that we're recording
     this.setState({recording: true});
+  }
+
+  pause() {
+    this.mediaRecorder.pause()
+  }
+  resume() {
+    this.mediaRecorder.resume()
   }
 
   stopRecording(e) {
@@ -53,52 +60,44 @@ export default class JabberMainPage extends Component {
   saveVideo() {
     // convert saved chunks to blob
     const blob = new Blob(this.chunks, {type: videoType});
+    console.log(blob);
     // generate video url from blob
     const videoURL = window.URL.createObjectURL(blob);
+    console.log(videoURL);
     // append videoURL to list of saved videos for rendering
-    const videos = this.state.videos.concat([videoURL]);
+    const videos = this.state.audioURL.concat([videoURL]);
     this.setState({videos});
+    this.setState({audioURL: videoURL})
   }
 
-  deleteVideo(videoURL) {
-    // filter out current videoURL from the list of saved videos
-    const videos = this.state.videos.filter(v => v !== videoURL);
-    this.setState({videos});
-  }
+  // deleteAudio(videoURL) {
+  //   // filter out current videoURL from the list of saved videos
+  //   const videos = this.state.audioURL.filter(v => v !== videoURL);
+  //   this.setState({videos});
+  // }
 
   
   
-  
+
   render() {
-    const {recording, videos} = this.state;
+    const {recording} = this.state;
 
     return (
       <div className="camera">
-        <h1>Jabber Main Page</h1>
-        <video
-          style={{width: 400}}
-          ref={v => {
-            this.video = v;
-          }}>
-          Video stream not available.
-        </video>
-        <button onClick={() => this.startUpMedia()}>Start Up Media</button>
-        <div>
-          {!recording && <button onClick={e => this.startRecording(e)}>Record</button>}
-          {recording && <button onClick={e => this.stopRecording(e)}>Stop</button>}
+        <div className={styles.logo}>
+          <h1>Jabber</h1>
+          <img src="https://images.vexels.com/media/users/3/158095/isolated/preview/675d732db5174565de6383cb451b20a6-open-mouth-icon-by-vexels.png"/>
         </div>
-        <div>
-          <h3>Recorded videos:</h3>
-          {videos.map((videoURL, i) => (
-            <div key={`video_${i}`}>
-              <video style={{width: 200}} src={videoURL} autoPlay loop />
-              <div>
-                <button onClick={() => this.deleteVideo(videoURL)}>Delete</button>
-                <a href={videoURL}>Download</a>
-              </div>
-            </div>
-          ))}
+        <div className={styles.recorder_area}>
+          <audio controls src={this.state.audioURL}> Video stream not available.</audio>
+            {/* <button onClick={() => this.startUpMedia()}>Start Up Media</button> */}
+            {!recording && <button onClick={e => this.startUpMedia(e)}>Record</button>}
+            {recording && <button onClick={e => this.stopRecording(e)}>Stop</button>}
+            <button onClick={() => this.pause()}>Pause</button>
+            <button onClick={() => this.resume()}>Resume</button>
         </div>
+            {this.state.recording ? (<h3>recording...</h3>) : null}
+            <div className={styles.map}><h1>map</h1></div>
       </div>
     );
   }
