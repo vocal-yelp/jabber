@@ -41,7 +41,6 @@ export default class JabberMainPage extends Component {
 
   stopRecording(e) {
     e.preventDefault();
-    // stop the recorder
     this.mediaRecorder.stop();
     // say that we're not recording
     this.setState({ recording: false });
@@ -58,17 +57,18 @@ export default class JabberMainPage extends Component {
   }
 
   saveAudio() {
-    // convert saved chunks to blob
     const blob = new Blob(this.chunks, { type: AudioType });
     console.log(blob);
-    // generate video url from blob
-    const videoURL = window.URL.createObjectURL(blob);
-    console.log(videoURL);
-    // append videoURL to list of saved videos for rendering
-    const videos = this.state.audioURL.concat([videoURL]);
-    // this.setState({videos});
-    this.setState({ audioURL: videoURL });
+    const blobURL = window.URL.createObjectURL(blob);
+    console.log(blobURL);
+    this.setState({ audioURL: blobURL });
   }
+
+  button = () => {
+    axios.post("/api/sendBlob", {
+      blob: 23
+    });
+  };
 
   render() {
     const { recording } = this.state;
@@ -91,9 +91,7 @@ export default class JabberMainPage extends Component {
           )}
           <button onClick={() => this.pause()}>Pause</button>
           <button onClick={() => this.resume()}>Resume</button>
-          <button onClick={() => this.putData()}>
-            Send Something to fireB
-          </button>
+          <button onClick={() => this.button()}>Test</button>
         </div>
         {this.state.recording ? <h3>recording...</h3> : null}
         <div className={styles.map_box}>
