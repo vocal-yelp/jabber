@@ -1,12 +1,8 @@
-@mixin flex-center { 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center
-}
+@import '../SassMixinsandVariables.scss';
+// Has access to flex-center mixin
 
 body {
-    background-color: rgb(243, 243, 132);
+    background-color: $JabberYellow;
 }
 
 .logo {
@@ -21,8 +17,8 @@ body {
     // border: 2px solid black;
 
     h1 {
-        color: rgb(20, 19, 22);
-        font-family: 'Times New Roman', Times, serif;
+        color: $JabberBlue;
+        font-family: 'Pacifico', cursive;
     }
     
     img {
@@ -33,33 +29,47 @@ body {
 }
 
 .recorder_area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
     height: 30vh;
+    
 
     audio {
         background-color: red;
         margin-bottom: 20px;
     }
     
+    .button_space {
+        margin-top: 10%;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    #invisible_button {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    }
+    
     button {
-        width: 10%;
-        height: 25px;
+        width: 15%;
+        height: 30px;
         margin-top: 20px;
         background-color: rgb(22, 22, 49);
         border-color: rgb(12, 12, 27);
         color: white;
-    }
+}
 
-    .map {
-        border: 2px solid black;
+    .map_box {
         height: 20vh;
         width: 90%;
         margin-left: 5%;
+        @include border;
+        
+        h1 {
+            color: red;
+        }
     }
 }
 
-@import './JabberMainPageMobile.module.scss'
+@import './JabberMainPageMobile.module.scss';
 

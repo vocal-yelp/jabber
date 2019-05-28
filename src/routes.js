@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import JabberMainPage from './components/JabberMainPage/JabberMainPage';
-import FirebaseLogin from './components/FirebaseLogin';
+import FirebaseLogin from './components/FirebaseLogin/FirebaseLogin';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 
 export default (
