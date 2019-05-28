@@ -29,11 +29,24 @@
     justify-content: center;
     align-items: center;
     height: 30vh;
+    // @include border;
 
     audio {
       background-color: red;
       margin-bottom: 20px;
       width: 60%;
+    }
+
+    .button_space {
+      margin-top: 10%;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    #invisible_button {
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
     }
 
     button {

@@ -5,6 +5,7 @@ import axios from "axios";
 
 // firebase.initializeApp()
 const storage = firebase.storage();
+const auth = firebase.auth();
 
 const AudioType = "audio/webm";
 
@@ -71,24 +72,31 @@ export default class JabberMainPage extends Component {
     }
   }
 
-  saveAudio() {
-    // convert saved chunks to blob
-    const blob = new Blob(this.chunks, { type: AudioType });
-    console.log(blob);
+  async saveAudio() {
+    const blob = await new Blob(this.chunks, { type: AudioType });
     this.setState({ blob });
-    // generate video url from blob
+    console.log(blob);
     const blobURL = window.URL.createObjectURL(blob);
     console.log(blobURL);
     this.setState({ blobURL });
+    const uploadBlob = storage.ref("audio/audio_size").put(this.state.blob);
+    uploadBlob.on(
+      "state_changed",
+      () => null,
+      error => {
+        console.log(error);
+      },
+      () => {
+        axios
+          .post("/api/sendBlob", {
+            name: firebase.auth().currentUser.displayName
+          })
+          .then(response => {
+            console.log(response);
+          });
+      }
+    );
   }
-
-  button() {
-    storage.ref("audio").put(this.state.blob);
-  }
-
-  // axios.post("/api/sendBlob", {
-  //   blob: 17
-  // })
 
   render() {
     const { recording } = this.state;
@@ -96,13 +104,11 @@ export default class JabberMainPage extends Component {
       <div className="camera">
         <div className={styles.logo}>
           <h1>Jabber</h1>
+          {/* <h3>{firebase.auth().currentUser.displayName}</h3> */}
           <img src="https://images.vexels.com/media/users/3/158095/isolated/preview/675d732db5174565de6383cb451b20a6-open-mouth-icon-by-vexels.png" />
         </div>
         <div className={styles.recorder_area}>
-          <audio controls src={this.state.audioURL}>
-            {" "}
-            Video stream not available.
-          </audio>
+          <audio controls src={this.state.blobURL} />
           <section className={styles.button_space}>
             {!recording ? (
               <>
@@ -117,7 +123,6 @@ export default class JabberMainPage extends Component {
                 </button>
               </>
             )}
-            <button onClick={() => this.button()}>Test</button>
           </section>
         </div>
         {recording ? <h3>Recording...</h3> : <h3>Not Recording Yet</h3>}

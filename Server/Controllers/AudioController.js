@@ -1,4 +1,5 @@
 const firebase = require("firebase");
+// const auth = firebase.auth();
 
 firebase.initializeApp({
   apiKey: process.env.API_KEY,
@@ -12,12 +13,12 @@ firebase.initializeApp({
 
 module.exports = {
   sendBlob: (req, res) => {
-    console.log(req.body.blob);
+    console.log(req.body.blobURL);
     firebase
       .database()
       .ref("audio/audio_size")
       .set({
-        blob: req.body.blob
+        name: req.body.name
       })
       .then(response => {
         res.sendStatus(200);

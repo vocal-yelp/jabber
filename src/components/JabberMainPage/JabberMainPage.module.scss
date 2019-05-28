@@ -17,7 +17,7 @@ body {
 
   h1 {
     color: $JabberBlue;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Pacifico", cursive;
   }
 
   img {
@@ -36,11 +36,23 @@ body {
     margin-bottom: 20px;
   }
 
+  .button_space {
+    margin-top: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  #invisible_button {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+  }
+
   button {
-    width: 10%;
-    height: 25px;
+    width: 15%;
+    height: 30px;
     margin-top: 20px;
-    background-color: $JabberBlue;
+    background-color: rgb(22, 22, 49);
     border-color: rgb(12, 12, 27);
     color: white;
   }
@@ -50,6 +62,7 @@ body {
     width: 90%;
     margin-left: 5%;
     @include border;
+
     h1 {
       color: red;
     }
