@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import firebase from "firebase";
+// import firebase from "firebase";
+// import firebase from "firebase/index.js";
+import * as firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
-firebase.initializeApp({
-  apiKey: "AIzaSyA0ifb48V1SfOyaVN4wc11PDf0LvQYVKvU",
-  authDomain: "jabber-dm22.firebaseapp.com"
-});
+// firebase.initializeApp({
+//   apiKey: "AIzaSyA0ifb48V1SfOyaVN4wc11PDf0LvQYVKvU",
+//   authDomain: "jabber-dm22.firebaseapp.com"
+// });
 
 class FirebaseLogin extends Component {
   constructor() {

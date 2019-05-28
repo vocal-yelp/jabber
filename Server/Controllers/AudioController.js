@@ -12,7 +12,7 @@ firebase.initializeApp({
 
 module.exports = {
   sendBlob: (req, res) => {
-    console.log("hit");
+    console.log(req.body.blob);
     firebase
       .database()
       .ref("audio/audio_size")

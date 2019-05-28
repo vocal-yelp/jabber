@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import axios from "axios";
 import styles from "./JabberMainPage.module.scss";
+import firebase from "../../firebase/index";
+import axios from "axios";
+
+// firebase.initializeApp()
+const storage = firebase.storage();
+
 const AudioType = "audio/webm";
 
 export default class JabberMainPage extends Component {
@@ -9,7 +14,9 @@ export default class JabberMainPage extends Component {
 
     this.state = {
       recording: false,
-      audioURL: ""
+      recordStatus: "Pause",
+      blob: "",
+      blobURL: ""
     };
   }
 
@@ -41,6 +48,7 @@ export default class JabberMainPage extends Component {
 
   stopRecording(e) {
     e.preventDefault();
+    // stop the recorder
     this.mediaRecorder.stop();
     // say that we're not recording
     this.setState({ recording: false });
@@ -49,26 +57,38 @@ export default class JabberMainPage extends Component {
   }
 
   pause() {
-    this.mediaRecorder.pause();
-  }
-
-  resume() {
-    this.mediaRecorder.resume();
+    const { recordStatus } = this.state;
+    if (recordStatus === "Pause") {
+      this.setState({ recordStatus: "Resume" });
+    } else {
+      this.setState({ recordStatus: "Pause" });
+    }
+    console.log(this.state.recordStatus);
+    if (recordStatus === "Resume") {
+      this.mediaRecorder.resume();
+    } else {
+      this.mediaRecorder.pause();
+    }
   }
 
   saveAudio() {
+    // convert saved chunks to blob
     const blob = new Blob(this.chunks, { type: AudioType });
     console.log(blob);
+    this.setState({ blob });
+    // generate video url from blob
     const blobURL = window.URL.createObjectURL(blob);
     console.log(blobURL);
-    this.setState({ audioURL: blobURL });
+    this.setState({ blobURL });
   }
 
-  button = () => {
-    axios.post("/api/sendBlob", {
-      blob: 23
-    });
-  };
+  button() {
+    storage.ref("audio").put(this.state.blob);
+  }
+
+  // axios.post("/api/sendBlob", {
+  //   blob: 17
+  // })
 
   render() {
     const { recording } = this.state;
@@ -83,17 +103,24 @@ export default class JabberMainPage extends Component {
             {" "}
             Video stream not available.
           </audio>
-          {!recording && (
-            <button onClick={e => this.startUpMedia(e)}>Record</button>
-          )}
-          {recording && (
-            <button onClick={e => this.stopRecording(e)}>Stop</button>
-          )}
-          <button onClick={() => this.pause()}>Pause</button>
-          <button onClick={() => this.resume()}>Resume</button>
-          <button onClick={() => this.button()}>Test</button>
+          <section className={styles.button_space}>
+            {!recording ? (
+              <>
+                <button onClick={e => this.startUpMedia(e)}>Record</button>
+                <button id={styles.invisible_button} />
+              </>
+            ) : (
+              <>
+                <button onClick={e => this.stopRecording(e)}>Submit</button>
+                <button onClick={() => this.pause()}>
+                  {this.state.recordStatus}
+                </button>
+              </>
+            )}
+            <button onClick={() => this.button()}>Test</button>
+          </section>
         </div>
-        {this.state.recording ? <h3>recording...</h3> : null}
+        {recording ? <h3>Recording...</h3> : <h3>Not Recording Yet</h3>}
         <div className={styles.map_box}>
           <img src="https://www.kulud-pharmacy.com/wp-content/uploads/2018/01/687474703a2f2f692e696d6775722e636f6d2f4f32454f4378662e706e67.png" />
         </div>
