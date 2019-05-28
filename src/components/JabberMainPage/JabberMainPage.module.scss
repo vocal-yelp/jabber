@@ -1,0 +1,59 @@
+@import "../SassMixinsandVariables.scss";
+// Has access to flex-center mixin
+
+body {
+  background-color: $JabberYellow;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 20vh;
+  margin: 10px 0px 5px 0px;
+  justify-content: center;
+  align-items: center;
+  // border: 2px solid black;
+
+  h1 {
+    color: $JabberBlue;
+    font-family: "Times New Roman", Times, serif;
+  }
+
+  img {
+    height: 50%;
+    width: 5%;
+    // border: 2px solid black;
+  }
+}
+
+.recorder_area {
+  @include flex-center;
+  height: 30vh;
+
+  audio {
+    // background-color: rgb(59, 151, 22);
+    margin-bottom: 20px;
+  }
+
+  button {
+    width: 10%;
+    height: 25px;
+    margin-top: 20px;
+    background-color: $JabberBlue;
+    border-color: rgb(12, 12, 27);
+    color: white;
+  }
+
+  .map_box {
+    height: 20vh;
+    width: 90%;
+    margin-left: 5%;
+    @include border;
+    h1 {
+      color: red;
+    }
+  }
+}
+
+@import "./JabberMainPageMobile.module.scss";

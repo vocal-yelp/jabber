@@ -1,0 +1,18 @@
+$JabberBlue: rgb(27, 26, 31);
+// reusable blue color for Jabber - Peter
+
+$JabberYellow: rgba(255, 255, 255, 0);
+//reusable yellow color for Jabber - Peter
+
+@mixin flex-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+// commonly used flex-box for centering JSX on page - Peter
+
+@mixin border {
+  border: 2px solid black;
+}
+// border for visual SASS debugging  - Peter
