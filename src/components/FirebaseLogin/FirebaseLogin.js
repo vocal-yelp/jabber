@@ -1,7 +1,11 @@
 import React, { Component } from "react";
+<<<<<<< HEAD
 // import firebase from "firebase";
 // import firebase from "firebase/index.js";
 import * as firebase from "firebase";
+=======
+import firebase from "../firebase/index";
+>>>>>>> master
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 // firebase.initializeApp({
@@ -36,6 +40,10 @@ class FirebaseLogin extends Component {
   }
 
   render() {
+<<<<<<< HEAD
+=======
+    console.log(firebase.auth()) // view user info we have available to work with
+>>>>>>> master
     return (
       <div>
         <h1>Firebase Login Page</h1>
@@ -60,4 +68,8 @@ class FirebaseLogin extends Component {
   }
 }
 
+<<<<<<< HEAD
 export default FirebaseLogin;
+=======
+export default FirebaseLogin;
+>>>>>>> master

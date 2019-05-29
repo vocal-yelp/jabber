@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import "../SassMixinsandVariables.scss";
 // Has access to flex-center mixin
 
@@ -70,3 +71,80 @@ body {
 }
 
 @import "./JabberMainPageMobile.module.scss";
+=======
+@import '../SassMixinsandVariables.scss';
+// Has access to flex-center mixin
+
+body {
+    background-color: $JabberYellow;
+}
+
+.logo {
+
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 20vh;
+    margin: 10px 0px 5px 0px;
+    justify-content: center;
+    align-items: center;
+    // border: 2px solid black;
+
+    h1 {
+        color: $JabberBlue;
+        font-family: 'Pacifico', cursive;
+    }
+    
+    img {
+        height: 50%;
+        width: 5%;
+        // border: 2px solid black;
+    }
+}
+
+.recorder_area {
+    @include flex-center;
+    height: 30vh;
+    
+
+    audio {
+        background-color: red;
+        margin-bottom: 20px;
+    }
+    
+    .button_space {
+        margin-top: 10%;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    #invisible_button {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    }
+    
+    button {
+        width: 15%;
+        height: 30px;
+        margin-top: 20px;
+        background-color: rgb(22, 22, 49);
+        border-color: rgb(12, 12, 27);
+        color: white;
+}
+
+    .map_box {
+        height: 20vh;
+        width: 90%;
+        margin-left: 5%;
+        @include border;
+        
+        h1 {
+            color: red;
+        }
+    }
+}
+
+@import './JabberMainPageMobile.module.scss';
+
+>>>>>>> master
