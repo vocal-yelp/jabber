@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import styles from "./JabberMainPage.module.scss";
 import firebase from "../../firebase/index";
 import axios from "axios";
 
-// firebase.initializeApp()
 const storage = firebase.storage();
 const auth = firebase.auth();
 
@@ -22,15 +22,11 @@ export default class JabberMainPage extends Component {
   }
 
   async startUpMedia() {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); //turn on device's mic, keep listening until told otherwise.
-    // show it to user
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     this.mediaRecorder = new MediaRecorder(stream, { mimeType: AudioType });
-    // init data storage for video chunks
     this.chunks = [];
-    // listen for data from media recorder
     this.mediaRecorder.ondataavailable = e => {
       if (e.data && e.data.size > 0) {
-        // if data exist through mediaRecorder, and it's size is greater than 0. Push data into "chunks"
         this.chunks.push(e.data);
       }
     };
@@ -38,22 +34,15 @@ export default class JabberMainPage extends Component {
   }
 
   startRecording() {
-    // e.preventDefault();
-    // wipe old data chunks
     this.chunks = [];
-    // start recorder with 10ms buffer
     this.mediaRecorder.start(10);
-    // say that we're recording
     this.setState({ recording: true });
   }
 
   stopRecording(e) {
     e.preventDefault();
-    // stop the recorder
     this.mediaRecorder.stop();
-    // say that we're not recording
     this.setState({ recording: false });
-    // save the video to memory
     this.saveAudio();
   }
 
@@ -97,33 +86,49 @@ export default class JabberMainPage extends Component {
       }
     );
   }
-
   render() {
     const { recording } = this.state;
     return (
       <div className="camera">
         <div className={styles.logo}>
           <h1>Jabber</h1>
-          {/* <h3>{firebase.auth().currentUser.displayName}</h3> */}
+          {auth.currentUser ? (
+            <h3>{auth.currentUser.displayName}</h3>
+          ) : (
+            <h3> Hello, guest! </h3>
+          )}
           <img src="https://images.vexels.com/media/users/3/158095/isolated/preview/675d732db5174565de6383cb451b20a6-open-mouth-icon-by-vexels.png" />
         </div>
         <div className={styles.recorder_area}>
-          <audio controls src={this.state.blobURL} />
-          <section className={styles.button_space}>
-            {!recording ? (
-              <>
-                <button onClick={e => this.startUpMedia(e)}>Record</button>
-                <button id={styles.invisible_button} />
-              </>
-            ) : (
-              <>
-                <button onClick={e => this.stopRecording(e)}>Submit</button>
-                <button onClick={() => this.pause()}>
-                  {this.state.recordStatus}
-                </button>
-              </>
-            )}
-          </section>
+          <audio controls src={this.state.blobURL}>
+            {" "}
+            Video stream not available.{" "}
+          </audio>
+          {auth.currentUser ? (
+            <section className={styles.button_space}>
+              {!recording ? (
+                <>
+                  <button onClick={e => this.startUpMedia(e)}>Record</button>
+                  <button id={styles.invisible_button} />
+                </>
+              ) : (
+                <>
+                  <button onClick={e => this.stopRecording(e)}>Submit</button>
+                  <button onClick={() => this.pause()}>
+                    {this.state.recordStatus}
+                  </button>
+                </>
+              )}
+              <button onClick={() => this.button()}>Test</button>
+            </section>
+          ) : (
+            <div>
+              <h2>Please login to record your own jabs </h2>
+              <Link to="/">
+                <h3>Here:</h3>
+              </Link>
+            </div>
+          )}
         </div>
         {recording ? <h3>Recording...</h3> : <h3>Not Recording Yet</h3>}
         <div className={styles.map_box}>

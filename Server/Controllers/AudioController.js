@@ -15,13 +15,32 @@ module.exports = {
   sendBlob: (req, res) => {
     console.log(req.body.blobURL);
     firebase
-      .database()
-      .ref("audio/audio_size")
-      .set({
-        name: req.body.name
-      })
+      .firestore()
+      .collection("audio")
+      .add({ name: req.body.name })
+      // .set(
+      //   {
+      //     name: req.body.name
+      //   },
+      //   { merge: true }
+      // )
       .then(response => {
         res.sendStatus(200);
       });
   }
 };
+
+// module.exports = {
+//   sendBlob: (req, res) => {
+//     console.log(req.body.blobURL);
+//     firebase
+//       .database()
+//       .ref("audio/audio_size")
+//       .set({
+//         name: req.body.name
+//       })
+//       .then(response => {
+//         res.sendStatus(200);
+//       });
+//   }
+// };
