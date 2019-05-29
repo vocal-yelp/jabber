@@ -3,6 +3,9 @@ import React, { Component } from "react";
 // import firebase from "firebase/index.js";
 import * as firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import Icon from "../Pics/jabber-Icon.png";
+
+import styles from "../FirebaseLogin/FirebaseLogin.module.scss";
 
 // firebase.initializeApp({
 //   apiKey: "AIzaSyA0ifb48V1SfOyaVN4wc11PDf0LvQYVKvU",
@@ -37,8 +40,9 @@ class FirebaseLogin extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.mainDiv}>
         <h1>Firebase Login Page</h1>
+        <img className={styles.Icon} src={Icon} />
         {this.state.isSignedIn ? (
           <span>
             <div>Signed In!</div>
