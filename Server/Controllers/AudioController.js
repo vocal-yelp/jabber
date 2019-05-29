@@ -16,13 +16,21 @@ firebase.initializeApp({
 // const firestorage = firebase.storage();
 
 module.exports = {
-  sendBlob: (req, res) => {
-    console.log("hit");
-    firebase
-      .firestore()
-      .ref("audio/audio_size")
-      .set({ blob: req.body.blob})
-      .then(response => res.sendStatus(200));
+    sendBlob: (req, res) => {
+      console.log(req.body.blobURL);
+      firebase
+        .firestore()
+        .collection("audio")
+        .add({ name: req.body.name })
+        // .set(
+        //   {
+        //     name: req.body.name
+        //   },
+        //   { merge: true }
+        // )
+        .then(response => {
+          res.sendStatus(200);
+    });
   },
 
   getFileNum: (res, req) => {

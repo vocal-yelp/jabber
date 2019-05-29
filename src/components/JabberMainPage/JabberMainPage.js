@@ -20,14 +20,11 @@ export default class JabberMainPage extends Component {
 }
 
 async startUpMedia() {
-    const stream = await navigator.mediaDevices.getUserMedia({audio: true}); //turn on device's mic, keep listening until told otherwise.
-    // show it to user
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true}); 
     this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm'});
-    // init data storage for video chunks
     this.chunks = [];
-    // listen for data from media recorder
     this.mediaRecorder.ondataavailable = e => {
-      if (e.data && e.data.size > 0) {  // if data exist through mediaRecorder, and it's size is greater than 0. Push data into "chunks"
+      if (e.data && e.data.size > 0) {  
         this.chunks.push(e.data);
 }};
     this.startRecording();
@@ -35,55 +32,52 @@ async startUpMedia() {
 
 startRecording() {
     this.chunks = [];
-
     this.mediaRecorder.start(10);
-
     this.setState({recording: true});
 }
 
 stopRecording(e) {
     e.preventDefault();
-
     this.mediaRecorder.stop();
-
     this.setState({recording: false});
-
     this.saveAudio();
 }
 
 async saveAudio() {
-    const blob = await new Blob(this.chunks, {type: 'audio/webm'}); console.log(blob);
-    
-    this.setState({blob})
-    
-    storage.ref("audio").put(this.state.blob)
-}
-
+const blob = await new Blob(this.chunks, {type: 'audio/webm'}); console.log(blob);
+const blobURL = window.URL.createObjectURL(blob);
+this.setState({blob, blobURL})
+storage.ref("audio").put(this.state.blob)    
+const uploadBlob = storage.ref(`audio`).put(this.state.blob);
+uploadBlob.on("state_changed", () => null, error => { console.log(error) },
+      () => {
+        axios
+          .post("/api/sendBlob", {
+            name: firebase.auth().currentUser.displayName
+          })
+          .then(response => {
+            console.log(response);
+          });
+      }
+    );
+  }
+  
 pause() {
     const {recordStatus} = this.state
-
     if(recordStatus === "Pause")  {this.setState({recordStatus: "Resume"})} else {this.setState({recordStatus: "Pause"})}
-
     if (recordStatus === "Resume") {
       this.mediaRecorder.resume()
     }
     else {
       this.mediaRecorder.pause()
     }
-}
+  }
   
-// button(){
-//   axios.get("/api/audioFiles")
-//     .then(res => {
-//       let num = res.data + 1;
-//       console.log(num)
-//   })
-// }
-
-render() {
-  const {recording} = this.state;
-    return (
-      <div className="camera">
+  
+  render() {
+    const {recording} = this.state;
+        return (
+          <div className="camera">
         <div className={styles.logo}>
             <h1>Jabber</h1>
             {auth.currentUser ? (<h3>{auth.currentUser.displayName}</h3>) : <h3> Hello, guest! </h3>}
@@ -114,6 +108,3 @@ render() {
     );
   }
 }
-
-// const blobURL = window.URL.createObjectURL(blob); console.log(blobURL);
-// this.setState({blobURL})

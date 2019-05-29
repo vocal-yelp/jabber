@@ -34,6 +34,7 @@ class FirebaseLogin extends Component {
   }
 
   render() {
+    console.log(firebase.auth()) // view user info we have available to work with
     return (
       <div>
         <h1>Firebase Login Page</h1>
