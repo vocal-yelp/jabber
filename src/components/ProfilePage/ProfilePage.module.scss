@@ -1,0 +1,18 @@
+@import '../SassMixinsandVariables.scss';
+@import './ProfilePageMobile.module.scss';
+
+.delete_icon {
+    width: 80%;
+    margin: 20px 0px 0px 10%;
+    color: $JabberBlue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+
